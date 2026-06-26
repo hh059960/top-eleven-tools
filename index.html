@@ -56,7 +56,6 @@
     </header>
 
     <div class="grid-layout">
-        <!-- 強度選擇 -->
         <div class="card full-width">
             <h2>⚖️ 戰力對比與實力差距</h2>
             <div class="form-group">
@@ -71,55 +70,42 @@
             </div>
         </div>
 
-        <!-- 我方陣型自行輸入 -->
         <div class="card">
             <h2>🛡️ 我方陣型配置 (請填輸入人數) <span class="count-badge" id="my-total">總數: 0</span></h2>
             <div class="position-grid">
-                <!-- 後衛 -->
                 <div class="pos-item"><span>DL</span><input type="number" id="my-DL" value="1" min="0" max="11" onchange="updateCount()"></div>
                 <div class="pos-item"><span>DC</span><input type="number" id="my-DC" value="2" min="0" max="11" onchange="updateCount()"></div>
                 <div class="pos-item"><span>DR</span><input type="number" id="my-DR" value="1" min="0" max="11" onchange="updateCount()"></div>
-                <!-- 後腰 -->
                 <div class="pos-item" style="grid-column: span 3;"><span>DMC</span><input type="number" id="my-DMC" value="0" min="0" max="11" onchange="updateCount()"></div>
-                <!-- 中場 -->
                 <div class="pos-item"><span>ML</span><input type="number" id="my-ML" value="1" min="0" max="11" onchange="updateCount()"></div>
                 <div class="pos-item"><span>MC</span><input type="number" id="my-MC" value="1" min="0" max="11" onchange="updateCount()"></div>
                 <div class="pos-item"><span>MR</span><input type="number" id="my-MR" value="1" min="0" max="11" onchange="updateCount()"></div>
-                <!-- 前腰 -->
                 <div class="pos-item"><span>AML</span><input type="number" id="my-AML" value="0" min="0" max="11" onchange="updateCount()"></div>
                 <div class="pos-item"><span>AMC</span><input type="number" id="my-AMC" value="0" min="0" max="11" onchange="updateCount()"></div>
                 <div class="pos-item"><span>AMR</span><input type="number" id="my-AMR" value="0" min="0" max="11" onchange="updateCount()"></div>
-                <!-- 前鋒 -->
                 <div class="pos-item" style="grid-column: span 3;"><span>ST</span><input type="number" id="my-ST" value="2" min="0" max="11" onchange="updateCount()"></div>
             </div>
         </div>
 
-        <!-- 對方陣型配置 -->
         <div class="card">
             <h2>⚔️ 對手陣型配置 (請填輸入人數) <span class="count-badge" id="opp-total">總數: 0</span></h2>
             <div class="position-grid">
-                <!-- 後衛 -->
                 <div class="pos-item"><span>DL</span><input type="number" id="opp-DL" value="1" min="0" max="11" onchange="updateCount()"></div>
                 <div class="pos-item"><span>DC</span><input type="number" id="opp-DC" value="2" min="0" max="11" onchange="updateCount()"></div>
                 <div class="pos-item"><span>DR</span><input type="number" id="opp-DR" value="1" min="0" max="11" onchange="updateCount()"></div>
-                <!-- 後腰 -->
                 <div class="pos-item" style="grid-column: span 3;"><span>DMC</span><input type="number" id="opp-DMC" value="0" min="0" max="11" onchange="updateCount()"></div>
-                <!-- 中場 -->
                 <div class="pos-item"><span>ML</span><input type="number" id="opp-ML" value="0" min="0" max="11" onchange="updateCount()"></div>
                 <div class="pos-item"><span>MC</span><input type="number" id="opp-MC" value="3" min="0" max="11" onchange="updateCount()"></div>
                 <div class="pos-item"><span>MR</span><input type="number" id="opp-MR" value="0" min="0" max="11" onchange="updateCount()"></div>
-                <!-- 前腰 -->
                 <div class="pos-item"><span>AML</span><input type="number" id="opp-AML" value="1" min="0" max="11" onchange="updateCount()"></div>
                 <div class="pos-item"><span>AMC</span><input type="number" id="opp-AMC" value="0" min="0" max="11" onchange="updateCount()"></div>
                 <div class="pos-item"><span>AMR</span><input type="number" id="opp-AMR" value="1" min="0" max="11" onchange="updateCount()"></div>
-                <!-- 前鋒 -->
                 <div class="pos-item" style="grid-column: span 3;"><span>ST</span><input type="number" id="opp-ST" value="1" min="0" max="11" onchange="updateCount()"></div>
             </div>
         </div>
 
         <button class="btn-calc full-width" onclick="calculateTactics()">⚡ 生成最優解戰術面板</button>
 
-        <!-- 輸出結果：戰術設置 -->
         <div class="card">
             <h2>📊 建議戰術設置</h2>
             <div class="tactic-output-grid">
@@ -134,12 +120,10 @@
             </div>
         </div>
 
-        <!-- 輸出結果：位置箭頭 -->
         <div class="card">
             <h2>🏹 我方位置箭頭配置</h2>
             <div class="arrow-list" id="arrow-output">
-                <!-- 動態生成 -->
-            </div>
+                </div>
         </div>
     </div>
 </div>
@@ -158,7 +142,7 @@
     }
 
     function calculateTactics() {
-        // 讀取強度差距
+        // 1. 讀取強度差距
         const diff = document.getElementById('strength-diff').value;
 
         // 讀取雙方位置人數
@@ -178,7 +162,7 @@
         // 計算我方實質後衛總數
         const myTotalDefenders = my.DL + my.DC + my.DR;
 
-        // 1. 計算戰術設定邏輯
+        // 2. 核心戰術心態與基礎設定
         let mentality = "正常";
         let counter = "關閉";
         let press = "低";
@@ -190,7 +174,7 @@
         else if(diff === "weak") { mentality = "防守"; counter = "開啟"; press = "低"; tackle = "一般"; }
         else if(diff === "very-weak") { mentality = "死守"; counter = "開啟"; press = "低"; tackle = "保守"; }
 
-        // 傳球方向邏輯 (分析對手防線與我方優勢)
+        // 傳球方向優化邏輯 (分析對手防線與我方優勢)
         let oppFlankDef = opp.DL + opp.DR + opp.ML + opp.MR + opp.AML + opp.AMR;
         let oppMidDef = opp.DC + opp.DMC + opp.MC + opp.AMC;
         let myFlankAtt = my.ML + my.MR + my.AML + my.AMR;
@@ -199,6 +183,8 @@
         let direction = "混合";
         if(oppMidDef > oppFlankDef && myFlankAtt >= 2) { direction = "兩翼"; }
         else if (oppFlankDef > oppMidDef && myMidAtt >= 3) { direction = "中路"; }
+        else if (my.AML > 0 && my.ML > 0 && opp.DR === 0) { direction = "左翼"; }
+        else if (my.AMR > 0 && my.MR > 0 && opp.DL === 0) { direction = "右翼"; }
 
         // 動態調整傳球方式與防越位機制
         let type = "短傳";
@@ -212,7 +198,7 @@
             offside = "關閉";
         } else {
             type = "短傳";
-            // 【防越位修正】唯有我方屬於「標準4後衛(有DL與DR)」且開進攻時，才允許開啟越位陷阱
+            // 【越位黃金修正】唯有我方屬於「標準4後衛(有DL且DR)」且開進攻時，才允許開啟越位陷阱
             if (myTotalDefenders >= 4 && my.DL > 0 && my.DR > 0) {
                 offside = "開啟";
             } else {
@@ -234,7 +220,7 @@
         document.getElementById('t-marking').innerText = marking;
         document.getElementById('t-offside').innerText = offside;
 
-        // 2. 計算位置箭頭邏輯與網頁渲染
+        // 3. 位置箭頭邏輯與網頁渲染
         const arrowListContainer = document.getElementById('arrow-output');
         arrowListContainer.innerHTML = ""; // 清空
 
@@ -261,14 +247,14 @@
                         arrowText = "⬇️ 藍箭頭 (深蹲防守)"; arrowClass = "arrow-down";
                     }
                 }
-                // 【攻擊手箭頭層次修正】
+                // 攻擊手箭頭層次修正 (防止前場踩腳塞車)
                 else if(pos === 'ST') {
                     if(diff === "strong" || diff === "very-strong") {
                         arrowText = "⬆️ 紅箭頭 (全速突擊吃餅)"; arrowClass = "arrow-up";
                     }
                 }
                 else if(pos === 'AMC') {
-                    // 前腰作為中路方向盤，堅決不掛紅箭頭，留在弧頂做球遠射
+                    // 前腰作為中路軸心，堅決不掛紅箭頭，留在弧頂做球或遠射
                     arrowText = "無箭頭 (負責弧頂盤帶與遠射)"; arrowClass = "arrow-none";
                 }
                 else if(pos === 'AML' || pos === 'AMR') {
@@ -276,9 +262,9 @@
                         arrowText = "⬆️ 紅箭頭 (兩翼降維打擊)"; arrowClass = "arrow-up";
                     }
                 }
-                // 【邊中場兼顧防守修正】
+                // 邊中場與中前衛
                 else if(pos === 'ML' || pos === 'MR') {
-                    // 只有當我方是標準4後衛（後方有DL/DR扛著），邊中場才能放膽掛紅箭頭突擊
+                    // 只有當我方是標準4後衛(有DL/DR護航)，邊中場在優勢局才能前插
                     if(direction === "兩翼" && (diff === "strong" || diff === "very-strong") && my.DL > 0 && my.DR > 0) {
                         arrowText = "⬆️ 紅箭頭 (邊路突擊)"; arrowClass = "arrow-up";
                     } else {
@@ -286,10 +272,14 @@
                     }
                 }
                 else if(pos === 'MC') {
-                    arrowText = "無箭頭 (掌控球權中轉)"; arrowClass = "arrow-none";
+                    if(direction === "中路" && diff === "strong") {
+                        arrowText = "⬆️ 紅箭頭 (前插參與進攻)"; arrowClass = "arrow-up";
+                    } else {
+                        arrowText = "無箭頭 (掌控球權中轉)"; arrowClass = "arrow-none";
+                    }
                 }
 
-                // 【完美閉合結構】使用反單引號與完整的 HTML 標籤渲染卡片
+                // 用反單引號完整包覆 HTML 結構，確保網頁完美渲染
                 const card = document.createElement('div');
                 card.className = `arrow-card ${arrowClass}`;
                 card.innerHTML = `<div style="color:#fff; font-size:1.1rem;">${pos}</div><div style="font-size:0.75rem; margin-top:4px;">${arrowText}</div>`;
