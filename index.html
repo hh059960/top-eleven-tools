@@ -41,24 +41,22 @@ function calculateTactics() {
     if(oppMidDef > oppFlankDef && myFlankAtt >= 2) { direction = "兩翼"; }
     else if (oppFlankDef > oppMidDef && myMidAtt >= 3) { direction = "中路"; }
 
-    // 【修正核心】動態調整傳球方式與防越位機制
+    // 動態調整傳球方式與防越位機制
     let type = "短傳";
     let offside = "關閉";
 
     if (diff === "weak" || diff === "very-weak") {
-        type = "長傳"; // 弱勢打防反長傳
+        type = "長傳"; 
         offside = "關閉";
     } else if (diff === "equal") {
         type = "混合";
         offside = "關閉";
     } else {
-        // 我方具備優勢 (strong / very-strong)
         type = "短傳";
-        // 【防越位修正】唯有我方屬於「標準4後衛(有DL與DR)」且開進攻時，才允許開啟越位陷阱
         if (myTotalDefenders >= 4 && my.DL > 0 && my.DR > 0) {
             offside = "開啟";
         } else {
-            offside = "關閉"; // 3後衛或殘缺防線死都不開越位
+            offside = "關閉"; 
         }
     }
 
@@ -76,7 +74,7 @@ function calculateTactics() {
     document.getElementById('t-marking').innerText = marking;
     document.getElementById('t-offside').innerText = offside;
 
-    // 3. 【箭頭邏輯大修正】拒絕無腦紅箭頭，講究攻防層次
+    // 3. 位置箭頭邏輯與網頁渲染
     const arrowListContainer = document.getElementById('arrow-output');
     arrowListContainer.innerHTML = ""; 
 
@@ -103,26 +101,22 @@ function calculateTactics() {
                     arrowText = "⬇️ 藍箭頭 (深蹲防守)"; arrowClass = "arrow-down";
                 }
             }
-            // 【攻擊手箭頭層次修正】
+            // 攻擊手箭頭層次修正
             else if(pos === 'ST') {
-                // 只有在我方具備實力優勢時，前鋒才掛紅箭頭衝鋒吃餅
                 if(diff === "strong" || diff === "very-strong") {
                     arrowText = "⬆️ 紅箭頭 (全速突擊吃餅)"; arrowClass = "arrow-up";
                 }
             }
             else if(pos === 'AMC') {
-                // 前腰（AMC）作為中路方向盤，堅決不掛紅箭頭，留在弧頂做球遠射
                 arrowText = "無箭頭 (負責弧頂盤帶與遠射)"; arrowClass = "arrow-none";
             }
             else if(pos === 'AML' || pos === 'AMR') {
-                // 邊鋒具備優勢時可以掛紅箭頭進行單兵爆破
                 if(diff === "strong" || diff === "very-strong") {
                     arrowText = "⬆️ 紅箭頭 (兩翼降維打擊)"; arrowClass = "arrow-up";
                 }
             }
-            // 【邊中場兼顧防守修正】
+            // 邊中場兼顧防守修正
             else if(pos === 'ML' || pos === 'MR') {
-                // 只有當我方是標準4後衛（後方有DL/DR扛著），邊中場才能放膽掛紅箭頭突擊
                 if(direction === "兩翼" && (diff === "strong" || diff === "very-strong") && my.DL > 0 && my.DR > 0) {
                     arrowText = "⬆️ 紅箭頭 (邊路突擊)"; arrowClass = "arrow-up";
                 } else {
@@ -130,11 +124,10 @@ function calculateTactics() {
                 }
             }
             else if(pos === 'MC') {
-                // 中前衛除非極端情況，保持平衡控球
                 arrowText = "無箭頭 (掌控球權中轉)"; arrowClass = "arrow-none";
             }
 
-            // 將成果加到畫面上
+            // 【重點修正位置】用反單引號完整包覆 HTML 結構，確保網頁渲染成功
             const card = document.createElement('div');
             card.className = `arrow-card ${arrowClass}`;
             card.innerHTML = `<div style="color:#fff; font-size:1.1rem;">${pos}</div><div style="font-size:0.75rem; margin-top:4px;">${arrowText}</div>`;
